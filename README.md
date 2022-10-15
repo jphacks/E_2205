@@ -1,14 +1,29 @@
-# サンプル（プロダクト名）
+# TwiCordGram（仮）
 
 [![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2022/08/JPHACKS2022_ogp.jpg)](https://www.youtube.com/watch?v=LUPQFB4QyVo)
 
 ## 製品概要
 ### 背景(製品開発のきっかけ、課題等）
+色々なSNSをまたいで使用すると、切り替えが面倒だったり、連絡を見逃すことが多い。
+SNSを一括して管理することによって、切り替えの手間を無くし、効率よく連絡をすることができるのではと考えた。
+
 ### 製品説明（具体的な製品の説明）
+・Twitter
+・Instagram→Facebook・Messenger
+・Discord
+・メール
+を一括して管理することができる。
+
 ### 特長
 #### 1. 特長1
+DM
+
 #### 2. 特長2
+TL
+
 #### 3. 特長3
+
+
 
 ### 解決出来ること
 ### 今後の展望
