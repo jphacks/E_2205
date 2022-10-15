@@ -38,7 +38,9 @@ TL
 * 
 
 #### フレームワーク・ライブラリ・モジュール
-* 
+* [React](https://ja.reactjs.org/)
+* [NestJS](https://nestjs.com/)
+* [Twitter API v2](https://github.com/PLhery/node-twitter-api-v2#twitter-api-v2)
 * 
 
 #### デバイス
