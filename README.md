@@ -8,10 +8,10 @@
 SNSを一括して管理することによって、切り替えの手間を無くし、効率よく連絡をすることができるのではと考えた。
 
 ### 製品説明（具体的な製品の説明）
-・Twitter
-・Instagram→Facebook・Messenger
-・Discord
-・メール
+ - Twitter
+ - Instagram→Facebook・Messenger
+ - Discord
+ - メール
 を一括して管理することができる。
 
 ### 特長
@@ -38,7 +38,9 @@ TL
 * 
 
 #### フレームワーク・ライブラリ・モジュール
-* 
+* [React](https://ja.reactjs.org/)
+* [NestJS](https://nestjs.com/)
+* [Twitter API v2](https://github.com/PLhery/node-twitter-api-v2#twitter-api-v2)
 * 
 
 #### デバイス
