@@ -2,6 +2,21 @@
   text-align: center;
 }
 
+.example2{
+  display: flex;
+  border: 1px solid #333;
+  padding: 5px;
+  background: #dff0ff;
+}
+.example2>div{
+  flex: 1;
+  border: 1px solid #333;
+  padding: 5px;
+  background: #ffffff;
+  margin: 5px;
+}
+
+/*
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -36,3 +51,4 @@
     transform: rotate(360deg);
   }
 }
+*/
