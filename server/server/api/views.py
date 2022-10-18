@@ -4,7 +4,7 @@ import tweepy
 import datetime
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-
+from django.views.decorators.csrf import csrf_exempt,csrf_protect
 def home_json(request):
     """
     Display Twitter-Timeline.
@@ -30,7 +30,7 @@ def home_json(request):
         }
         return JsonResponse(data)
 
-def pageHome(request):
+def page_home(request):
     client = tweepy.Client(
         consumer_key=os.environ['CONSUMER_KEY'],
         consumer_secret=os.environ[ 'CONSUMER_SECRET'],
@@ -53,3 +53,17 @@ def pageHome(request):
         paginator_str.append(tweets_str)
 
     return JsonResponse({ 'data' : paginator_str })
+
+#@csrf_exempt
+def create_tweet(request):
+    client = tweepy.Client(
+        consumer_key=os.environ['CONSUMER_KEY'],
+        consumer_secret=os.environ[ 'CONSUMER_SECRET'],
+        access_token=os.environ['ACCESS_TOKEN'],
+        access_token_secret=os.environ['ACCESS_TOKEN_SECRET']
+    )
+    new_tweet = request.POST.get('tweet', 'none')
+    if(new_tweet != 'none'):
+        client.create_tweet(text=new_tweet)
+
+    return JsonResponse({'data' : new_tweet})
