@@ -119,4 +119,4 @@ def create_tweet(request):
     if (new_tweet != 'none'):
         client.create_tweet(text=new_tweet)
 
-    return JsonResponse({'data': new_tweet})
+    return JsonResponse({'data' : new_tweet})
