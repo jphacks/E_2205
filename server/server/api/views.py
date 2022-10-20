@@ -5,19 +5,23 @@ import datetime
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
+
+client = tweepy.Client(
+    consumer_key=os.environ['CONSUMER_KEY'],
+    consumer_secret=os.environ[ 'CONSUMER_SECRET'],
+    access_token=os.environ['ACCESS_TOKEN'],
+    access_token_secret=os.environ['ACCESS_TOKEN_SECRET']
+)
+
 def home_json(request):
     """
     Display Twitter-Timeline.
     """
-    client = tweepy.Client(
-        consumer_key=os.environ['CONSUMER_KEY'],
-        consumer_secret=os.environ[ 'CONSUMER_SECRET'],
-        access_token=os.environ['ACCESS_TOKEN'],
-        access_token_secret=os.environ['ACCESS_TOKEN_SECRET']
-    )
+    
     
     if request.method == 'GET':
         response = client.get_home_timeline()
+        print(response)
         timeline = []
         for tweets in response:
             string = []
@@ -31,12 +35,6 @@ def home_json(request):
         return JsonResponse(data)
 
 def page_home(request):
-    client = tweepy.Client(
-        consumer_key=os.environ['CONSUMER_KEY'],
-        consumer_secret=os.environ[ 'CONSUMER_SECRET'],
-        access_token=os.environ['ACCESS_TOKEN'],
-        access_token_secret=os.environ['ACCESS_TOKEN_SECRET']
-    )
 
     paginator_str = []
     for users_tweets in tweepy.Paginator(
@@ -56,12 +54,6 @@ def page_home(request):
 
 #@csrf_exempt
 def create_tweet(request):
-    client = tweepy.Client(
-        consumer_key=os.environ['CONSUMER_KEY'],
-        consumer_secret=os.environ[ 'CONSUMER_SECRET'],
-        access_token=os.environ['ACCESS_TOKEN'],
-        access_token_secret=os.environ['ACCESS_TOKEN_SECRET']
-    )
     new_tweet = request.POST.get('tweet', 'none')
     if(new_tweet != 'none'):
         client.create_tweet(text=new_tweet)
