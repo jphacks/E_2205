@@ -1,19 +1,68 @@
-.App {
-  text-align: center;
+.App{
+  display: flex;
+  height: 559px;
+  padding: 5px;
+  background: linear-gradient(to bottom right, #41b9ff, #ef85ff);
 }
 
-.example2{
-  display: flex;
+.left_element{
+  flex: 4;
   border: 1px solid #333;
   padding: 5px;
-  background: #dff0ff;
+  background: #ffffff;
+  margin: 10px;
+  border-radius: 20px;
 }
-.example2>div{
+
+.center_element{
+  flex: 4;
+  border: 1px solid #333;
+  padding: 10px;
+  background: #ffffff;
+  margin: 10px;
+  border-radius: 20px;
+}
+
+.right_element{
   flex: 1;
   border: 1px solid #333;
   padding: 5px;
   background: #ffffff;
-  margin: 5px;
+  margin: 10px;
+  border-radius: 20px;
+}
+
+.create_post{
+  height: 37%;
+  border: 1px solid #333;
+  padding: 5px;
+  background: #ffffff;
+}
+
+.timeline{
+  height: 90%;
+  border: 1px solid #333;
+  margin: 1px;
+  overflow-y: scroll; 
+}
+
+.post{
+  min-height: 80px;
+  padding: 5px;
+  border: 1px solid #333;
+}
+
+.subtitle{
+  font-size: 32px;
+  margin-top: -36px;
+  margin-bottom: -30px;
+  margin-left: 10px;
+}
+
+.username{
+  font-size: 20px;
+  margin-top: -30px;
+  margin-bottom: -25px;
 }
 
 /*
