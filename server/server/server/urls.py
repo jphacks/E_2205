@@ -20,7 +20,6 @@ from api import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', views.home_json),
-    path('create_tweet/', views.create_tweet),
     path('login/', views.login),
     path('oauth/', views.oauth),
     path('react_home_json/', views.react_home_json),
@@ -28,5 +27,8 @@ urlpatterns = [
     path('unretweet/', views.unretweet),
     path('like/', views.like),
     path('unlike/', views.unlike),
+    path('create_tweet/', views.create_tweet),
     path('reply/', views.reply),
+    path('delete_tweet/', views.delete_tweet),
+
 ]

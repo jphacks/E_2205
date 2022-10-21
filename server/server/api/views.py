@@ -60,18 +60,6 @@ def home_json(request):
     else:
         return JsonResponse({'hello': 'json'})
 
-
-@csrf_exempt
-def create_tweet(request):
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
-
-        new_tweet = request.POST.get('tweet', 'none')
-        if (new_tweet != 'none'):
-            create_client(access_token, access_token_secret).create_tweet(text=new_tweet)
-
-
 def login(request):
     API_KEY = os.environ['CONSUMER_KEY']
     API_KEY_SECRET = os.environ['CONSUMER_SECRET']
@@ -129,10 +117,11 @@ def twitter_function(type :str, request):
         client = create_client(access_token, access_token_secret)
         tweet_id = request.POST['tweet_id']
 
-        if(type == 'like'): client.like(tweet_id)
-        elif(type == 'unlike'): client.unlike(tweet_id)
-        elif(type == 'retweet'): client.retweet(tweet_id)
-        elif(type == 'unretweet'): client.unretweet(tweet_id)
+        if  (type == 'like')        : client.like(tweet_id)
+        elif(type == 'unlike')      : client.unlike(tweet_id)
+        elif(type == 'retweet')     : client.retweet(tweet_id)
+        elif(type == 'unretweet')   : client.unretweet(tweet_id)
+        elif(type == 'delete_tweet'): client.delete_tweet(tweet_id)
 
         return JsonResponse({'data': tweet_id})
 
@@ -151,6 +140,20 @@ def like(request):
 @csrf_exempt
 def unlike(request):
     return twitter_function('unlike', request)
+
+@csrf_exempt
+def create_tweet(request):
+    if request.method == 'POST':
+        access_token = request.POST['access_token']
+        access_token_secret = request.POST['access_token_secret']
+
+        new_tweet = request.POST.get('tweet', 'none')
+        if (new_tweet != 'none'):
+            create_client(access_token, access_token_secret).create_tweet(text=new_tweet)
+
+@csrf_exempt
+def delete_tweet(request):
+    return twitter_function('delete_tweet', request)
 
 @csrf_exempt
 def reply(request):
