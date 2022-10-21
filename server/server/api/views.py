@@ -72,8 +72,8 @@ def home_json(request):
     """
 
     if request.method == 'POST':
-        access_token=request.POST['access_token']
-        access_token_secret=request.POST['access_token_secret']
+        access_token = request.POST['access_token']
+        access_token_secret = request.POST['access_token_secret']
 
         client = tweepy.Client(
             os.environ['CONSUMER_KEY'],
@@ -114,4 +114,25 @@ def create_tweet(request):
     if (new_tweet != 'none'):
         client.create_tweet(text=new_tweet)
 
-    return JsonResponse({'data' : new_tweet})
+    return JsonResponse({'data': new_tweet})
+
+
+def react_home_json(request):
+    client = tweepy.Client(
+        os.environ['BEARER_TOKEN'],
+        os.environ['CONSUMER_KEY'],
+        os.environ['CONSUMER_SECRET'],
+        os.environ['ACCESS_TOKEN'],
+        os.environ['ACCESS_TOKEN_SECRET'],
+        return_type=Response
+    )
+
+    response = client.get_home_timeline(
+        exclude=['retweets', 'replies'],
+        tweet_fields=['created_at', 'author_id', 'public_metrics'],
+        expansions=['author_id', 'attachments.media_keys'],
+        user_fields=['name', 'username', 'profile_image_url', 'url'],
+        media_fields=['url']
+    ).json()
+
+    return JsonResponse(response)
