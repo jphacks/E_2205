@@ -126,6 +126,8 @@ def twitter_function(type :str, request):
         elif(type == 'create_tweet'): client.create_tweet(text=rp('message'))
         elif(type == 'delete_tweet'): client.delete_tweet(rp('tweet_id'))
         elif(type == 'reply')       : client.create_tweet(in_reply_to_tweet_id=rp('tweet_id'), text=rp('message'))
+        elif(type == 'follow')      : client.follow_user(client.get_user(username=rp('username')).json()['data']['id'])
+        elif(type == 'unfollow')    : client.unfollow_user(client.get_user(username=rp('username')).json()['data']['id'])
 
         return JsonResponse({'IsSucceed': 'true'})
 
@@ -156,3 +158,11 @@ def delete_tweet(request):
 @csrf_exempt
 def reply(request):
     return twitter_function('reply', request)
+
+@csrf_exempt
+def follow(request):
+    return twitter_function('follow', request)
+
+@csrf_exempt
+def unfollow(request):
+    return twitter_function('unfollow', request)
