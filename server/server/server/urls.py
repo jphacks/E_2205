@@ -24,6 +24,5 @@ urlpatterns = [
     path('create_tweet/', views.create_tweet),
     path('login/', views.login),
     path('oauth/', views.oauth),
-    path('user_prof/', views.user_prof),
     path('react_home_json/', views.react_home_json),
 ]

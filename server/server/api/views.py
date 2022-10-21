@@ -4,7 +4,7 @@ import tweepy
 from requests import Response
 from requests_oauthlib import OAuth1Session
 from django.shortcuts import redirect
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -22,14 +22,32 @@ def create_client(access_token: str, access_token_secret: str):
 
 
 @csrf_exempt
+def react_home_json(request):
+    if request.method == 'POST':
+        access_token = request.POST['access_token']
+        access_token_secret = request.POST['access_token_secret']
+        
+        response = create_client(access_token, access_token_secret).get_home_timeline(
+            exclude=['retweets', 'replies'],
+            tweet_fields=['created_at', 'author_id', 'public_metrics'],
+            expansions=['author_id', 'attachments.media_keys'],
+            user_fields=['name', 'username', 'profile_image_url', 'url'],
+            media_fields=['url']
+        ).json()
+        return JsonResponse(response)
+    else:
+        return HttpResponse('need {access_token,access_token_secret}')
+
+
+@csrf_exempt
 def home_json(request):
     """
     Display Twitter-Timeline.
     """
 
     if request.method == 'POST':
-        access_token = request.POST.get('access_token', '')
-        access_token_secret = request.POST.get('access_token_secret', '')
+        access_token = request.POST['access_token']
+        access_token_secret = request.POST['access_token_secret']
 
         response = create_client(access_token, access_token_secret).get_home_timeline().json()
         return JsonResponse(response)
@@ -40,8 +58,8 @@ def home_json(request):
 @csrf_exempt
 def page_home(request):
     if request.method == 'POST':
-        access_token = request.POST.get('access_token', '')
-        access_token_secret = request.POST.get('access_token_secret', '')
+        access_token = request.POST['access_token']
+        access_token_secret = request.POST['access_token_secret']
 
         response = create_client(access_token, access_token_secret).get_home_timeline(max_results=100).json()
         next_token = response['meta']['next_token']
@@ -54,8 +72,8 @@ def page_home(request):
 @csrf_exempt
 def create_tweet(request):
     if request.method == 'POST':
-        access_token = request.POST.get('access_token', '')
-        access_token_secret = request.POST.get('access_token_secret', '')
+        access_token = request.POST['access_token']
+        access_token_secret = request.POST['access_token_secret']
 
         new_tweet = request.POST.get('tweet', 'none')
         if (new_tweet != 'none'):
