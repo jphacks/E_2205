@@ -142,3 +142,16 @@ def like(request):
         create_client(access_token, access_token_secret).like(tweet_id)
 
         return JsonResponse({'hello': tweet_id})
+
+@csrf_exempt
+def reply(request):
+    if request.method == 'POST':
+        access_token = request.POST['access_token']
+        access_token_secret = request.POST['access_token_secret']
+
+        message = request.POST['reply']
+        tweet_id = request.POST['tweet_id']
+        if (message != 'none'):
+            create_client(access_token, access_token_secret).create_tweet(in_reply_to_tweet_id=tweet_id, text=message)
+        
+        return JsonResponse({'data': message})

@@ -26,4 +26,5 @@ urlpatterns = [
     path('react_home_json/', views.react_home_json),
     path('retweet/', views.retweet),
     path('like/', views.like),
+    path('reply/', views.reply),
 ]
