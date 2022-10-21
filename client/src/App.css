@@ -3,8 +3,9 @@
 
 .App{
   display: flex;
-  height: 559px;
-  padding: 5px;
+  height: 99vh;
+  padding: 0.5vh;
+  /* padding:5px; */
   background: linear-gradient(to bottom right, #41b9ff, #ef85ff);
 }
 
@@ -20,6 +21,8 @@
   background: #ffffffc0;
   margin: 10px;
   border-radius: 10px;
+  /* position追加 */
+  position:relative;
 }
 
 .right_element{
@@ -30,15 +33,25 @@
 }
 
 .create_post{
-  height: 37%;
+  /* 37%→150px */
+  height: 150px;
   margin: 10px;
   background: #ffffff;
 }
 
 .timeline{
-  height: 90%;
+  /* height: 90%;
   margin: 10px;
   margin-left: 12px;
+  overflow-y: scroll;
+  から変更
+  */
+  position: absolute;
+  top:7%;
+  bottom:0;
+  right:0;
+  left:0;
+  margin: 10px 10px 10px 12px;
   overflow-y: scroll;
 }
 
