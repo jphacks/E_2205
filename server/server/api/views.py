@@ -128,9 +128,23 @@ def retweet(request):
         access_token_secret = request.POST['access_token_secret']
 
         tweet_id = request.POST['tweet_id']
+
         create_client(access_token, access_token_secret).retweet(tweet_id)
 
-        return JsonResponse({'hello': tweet_id})
+        return JsonResponse({'data': tweet_id})
+
+@csrf_exempt
+def unretweet(request):
+    if request.method == 'POST':
+        # access_token = request.POST['access_token']
+        # access_token_secret = request.POST['access_token_secret']
+        access_token = '1511487045251653633-kKnhTXpmrFY6G9acCS40zB7tmXrMuR'
+        access_token_secret = '5MtcUU1jzIU8HX9lrLkUTCWdGM9CKoCgpDtJuApCQ7tZM'
+        tweet_id = request.POST['tweet_id']
+
+        create_client(access_token, access_token_secret).unretweet(tweet_id)
+
+        return JsonResponse({'data': tweet_id})
 
 @csrf_exempt
 def like(request):
