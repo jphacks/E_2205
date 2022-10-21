@@ -18,11 +18,9 @@ from django.urls import path
 from api import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('home/', views.home_json),
-    path('page_home/', views.page_home),
-    path('create_tweet/', views.create_tweet),
+    path('', views.IndexView.as_view()),
     path('login/', views.login),
     path('oauth/', views.oauth),
-    path('user_prof/', views.user_prof),
+    path('logout/', views.logout),
+    path('admin/', admin.site.urls),
 ]

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>ハローワールド</title>
+    </head>
+    <body>
+        <p>Hello {{ screen_name }}!!</p>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="text" name="tweet">
+            <input type="submit" value="送信">
+        </form>
+        <div id="container"></div>
+        <div id="modal"></div>
+        <p>{{ home }}</p>
+    </body>
+    <script>
+    function jsonOutput(json) {
+            // 生成したHTMLを入れておく変数
+            let html = '';
+            // 生成したモーダル用のHTMLを入れておく変数
+            let modal = '';
+      
+            // JSONにあるオブジェクト数の分だけfor文で処理
+            for (let i = 0; i < json.length; i++) {
+                // アンカーリンクの場合
+                let htmlParts =
+                  '<div class="p-parts">' +
+                  '<p class="p-parts__id">' +
+                  'id:' + json[i].id +
+                  '</p>' +
+                  '<p class="p-parts__text">' +
+                  'text:' + json[i].text +
+                  '</p>' +
+                  '<p class="p-parts__edit_date">' +
+                  'date:' + json[i].edit_history_tweet_ids +
+                  '</p>' +
+                  '</div>';
+      
+                // 先述の変数の中に、出来上がったHTMLを格納
+                html += htmlParts;
+            }
+      
+            // 変数に格納したHTMLを出力
+            document.getElementById('container').innerHTML = html;
+            document.getElementById('modal').innerHTML = modal;
+          }
+
+    const data = {{ home.data|safe }};
+    console.log(data);
+
+    jsonOutput(data);
+    </script>
+</html>
