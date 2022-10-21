@@ -60,6 +60,29 @@ def home_json(request):
     else:
         return JsonResponse({'hello': 'json'})
 
+@csrf_exempt
+def user_tweets(request):
+    """
+    Display User Tweets.
+    """
+
+    if request.method == 'POST':
+        access_token = request.POST['access_token']
+        access_token_secret = request.POST['access_token_secret']
+
+        client = create_client(access_token, access_token_secret)
+        user_id = client.get_user(username=request.POST['username']).json()['data']['id']
+
+        try:
+            next_token = request.POST['next_token']
+            response = client.get_users_tweets(id=user_id, pagination_token=next_token).json()
+        except KeyError:
+            response = client.get_users_tweets(user_id).json()
+
+        return JsonResponse(response)
+    else:
+        return JsonResponse({'hello': 'json'})
+
 def login(request):
     API_KEY = os.environ['CONSUMER_KEY']
     API_KEY_SECRET = os.environ['CONSUMER_SECRET']
