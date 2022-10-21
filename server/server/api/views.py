@@ -1,11 +1,13 @@
 import os
 import datetime
+import pprint
+import json
 from django.http import JsonResponse
 from django.shortcuts import redirect
 import tweepy
 from requests import Response
 from requests_oauthlib import OAuth1Session
-
+from django.views.decorators.csrf import csrf_exempt,csrf_protect
 
 def login(request):
     API_KEY = os.environ['CONSUMER_KEY']
@@ -45,17 +47,17 @@ def oauth(request, *args, **kwargs):
     access_token = acc_token_dict["oauth_token"]
     access_token_secret = acc_token_dict["oauth_token_secret"]
 
-    # print("Access Token       :", access_token)
-    # print("Access Token Secret:", access_token_secret)
-    # print("User ID            :", acc_token_dict["user_id"])
-    # print("Screen Name        :", acc_token_dict["screen_name"])
+    print("Access Token       :", access_token)
+    print("Access Token Secret:", access_token_secret)
+    print("User ID            :", acc_token_dict["user_id"])
+    print("Screen Name        :", acc_token_dict["screen_name"])
 
     client = tweepy.Client(
-        os.environ['BEARER_TOKEN'],
-        os.environ['CONSUMER_KEY'],
-        os.environ['CONSUMER_SECRET'],
-        access_token,
-        access_token_secret
+         os.environ['BEARER_TOKEN'],
+        consumer_key = os.environ['CONSUMER_KEY'],
+        consumer_secret = os.environ['CONSUMER_SECRET'],
+        access_token = access_token,
+        access_token_secret = access_token_secret
     )
 
     tweet_text = f"connected {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
@@ -65,53 +67,65 @@ def oauth(request, *args, **kwargs):
     response = redirect('https://twitter.com/home')
     return response
 
-
+@csrf_exempt
 def home_json(request):
     """
     Display Twitter-Timeline.
     """
 
     if request.method == 'POST':
-        access_token=request.POST['access_token']
-        access_token_secret=request.POST['access_token_secret']
+        access_token=request.POST.get('access_token', '')
+        access_token_secret=request.POST.get('access_token_secret', '')
 
         client = tweepy.Client(
-            os.environ['CONSUMER_KEY'],
-            os.environ['CONSUMER_SECRET'],
-            access_token,
-            access_token_secret,
+            consumer_key=os.environ['CONSUMER_KEY'],
+            consumer_secret=os.environ[ 'CONSUMER_SECRET'],
+            access_token=access_token,
+            access_token_secret=access_token_secret,
             return_type=Response
         )
 
         response = client.get_home_timeline().json()
 
         return JsonResponse(response)
+    else:
+        return JsonResponse({'hello': 'json'})
 
-
+@csrf_exempt
 def page_home(request):
+    if request.method == 'POST':
+        access_token=request.POST.get('access_token', '')
+        access_token_secret=request.POST.get('access_token_secret', '')
 
-    paginator_str = []
-    for users_tweets in tweepy.Paginator(
-        client.get_home_timeline,
-        exclude=['retweets', 'replies'],
-        tweet_fields=['public_metrics'],
-        max_results=100,
-        start_time=datetime.datetime.now() - datetime.timedelta(days=1)
-    ):
-        tweets_str = []
-        for tweet in users_tweets.data:
-            tweets_str.append(str(tweet.data))
+        client = tweepy.Client(
+            consumer_key = os.environ['CONSUMER_KEY'],
+            consumer_secret = os.environ['CONSUMER_SECRET'],
+            access_token = access_token,
+            access_token_secret = access_token_secret,
+            return_type=Response
+        )
+    
+        response = client.get_home_timeline(max_results=100).json()
+        next_token = response['meta']['next_token']
 
-        paginator_str.append(tweets_str)
+        return JsonResponse(response)
+    else:
+        return JsonResponse({'hello': 'json'})
+            
 
-    return JsonResponse({'data': paginator_str})
-
-# @csrf_exempt
-
-
+@csrf_exempt
 def create_tweet(request):
-    new_tweet = request.POST.get('tweet', 'none')
-    if (new_tweet != 'none'):
-        client.create_tweet(text=new_tweet)
+    if request.method == 'POST':
+        access_token=request.POST.get('access_token', '')
+        access_token_secret=request.POST.get('access_token_secret', '')
 
-    return JsonResponse({'data' : new_tweet})
+        client = tweepy.Client(
+            consumer_key=os.environ['CONSUMER_KEY'],
+            consumer_secret=os.environ[ 'CONSUMER_SECRET'],
+            access_token=access_token,
+            access_token_secret=access_token_secret,
+            return_type=Response
+        )
+        new_tweet = request.POST.get('tweet', 'none')
+        if (new_tweet != 'none'):
+            client.create_tweet(text=new_tweet)

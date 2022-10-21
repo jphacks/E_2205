@@ -24,5 +24,4 @@ urlpatterns = [
     path('create_tweet/', views.create_tweet),
     path('login/', views.login),
     path('oauth/', views.oauth),
-    path('user_prof/', views.user_prof),
 ]
