@@ -1,8 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import './TwitterTL.tsx'
 
 import { useState} from "react";
+import TwitterTL from './TwitterTL';
 
 type TodoType = {
   id: number;
@@ -59,48 +61,8 @@ const App: React.FC = () => {
   <div className="subtitle"><p>Twitter</p></div>
 
   <div className="timeline">
-
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-
+  <TwitterTL/>
+  
   </div>
 </div>
 
