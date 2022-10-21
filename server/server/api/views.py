@@ -131,3 +131,14 @@ def retweet(request):
         create_client(access_token, access_token_secret).retweet(tweet_id)
 
         return JsonResponse({'hello': tweet_id})
+
+@csrf_exempt
+def like(request):
+    if request.method == 'POST':
+        access_token = request.POST['access_token']
+        access_token_secret = request.POST['access_token_secret']
+
+        tweet_id = request.POST['tweet_id']
+        create_client(access_token, access_token_secret).like(tweet_id)
+
+        return JsonResponse({'hello': tweet_id})
