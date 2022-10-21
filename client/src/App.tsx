@@ -42,7 +42,9 @@ const App: React.FC = () => {
       />
       <button onClick={(): void => handleClick()}>tweet</button>
       {todos.map((number) => (
-        <p key={number.id}>{number.todo}</p>
+        <p key={number.id}>
+          {number.todo}
+        </p>
 
       ))}
   </div>
