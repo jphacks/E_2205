@@ -44,7 +44,7 @@ const TwitterTL = ()=>{
                     );
                 }
                 return (
-                <div key={v.id} className="p_parts" style={{background: "lightgray"}}>
+                <div key={v.id} className="p_parts" style={{background: "white"}}>
                     <p className="p_parts_id" style={{fontSize:"15px", verticalAlign:"middle"}}>
                         <img
                             src={u_icon}
@@ -54,7 +54,7 @@ const TwitterTL = ()=>{
                                 verticalAlign: "middle"
                             }}
                         />
-                        <span style={{verticalAlign:"middle"}}>{u_name}</span>
+                        <span style={{verticalAlign:"middle"}}> {u_name} </span>
                         <span style={{fontSize:"80%", color:"gray"}}>{"@"+u_username}</span>
                     </p>
                     <div className="p_parts_text" style={{margin: 0}}>
@@ -103,9 +103,9 @@ const TwitterTL = ()=>{
                     </div>
                     <p className="p_parts_mtx" style={{margin:0}}>
                         ↩{v.public_metrics.reply_count}
-                        ≫{v.public_metrics.quote_count}
-                        🔁{v.public_metrics.retweet_count}
-                        ♡{v.public_metrics.like_count}
+                        　≫{v.public_metrics.quote_count}
+                        　RT {v.public_metrics.retweet_count}
+                        　❤{v.public_metrics.like_count}
                     </p>
                 </div>
                 );

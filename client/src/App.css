@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Corben:700');
+@import url('https://fonts.googleapis.com/css?family=Vollkorn');
+
 .App{
   display: flex;
   height: 559px;
@@ -7,62 +10,51 @@
 
 .left_element{
   flex: 4;
-  border: 1px solid #333;
-  padding: 5px;
-  background: #ffffff;
+  background: #ffffffc0;
   margin: 10px;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .center_element{
   flex: 4;
-  border: 1px solid #333;
-  padding: 10px;
-  background: #ffffff;
+  background: #ffffffc0;
   margin: 10px;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .right_element{
   flex: 1;
-  border: 1px solid #333;
-  padding: 5px;
-  background: #ffffff;
+  background: #ffffffc0;
   margin: 10px;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .create_post{
   height: 37%;
-  border: 1px solid #333;
-  padding: 5px;
+  margin: 10px;
   background: #ffffff;
 }
 
 .timeline{
   height: 90%;
-  border: 1px solid #333;
-  margin: 1px;
+  margin: 10px;
   overflow-y: scroll; 
 }
 
-.post{
-  min-height: 80px;
-  padding: 5px;
-  border: 1px solid #333;
+.title{
+  font-size: 36px;
+  font-family: 'Corben', cursive;
+  margin-top: -20px;
+  margin-bottom: -20px;
+  text-align: center;
 }
 
 .subtitle{
-  font-size: 32px;
-  margin-top: -36px;
+  font-size: 30px;
+  font-family: 'Vollkorn', cursive;
+  margin-top: -24px;
   margin-bottom: -30px;
   margin-left: 10px;
-}
-
-.username{
-  font-size: 20px;
-  margin-top: -30px;
-  margin-bottom: -25px;
 }
 
 /*

@@ -35,7 +35,7 @@ const App: React.FC = () => {
 
 <div className="left_element">
 
-  <h1>TwiCordGram(仮)</h1>
+  <div className="title"><p>TwiCordGram</p></div>
 
   <div className='create_post'>
     <input
@@ -61,57 +61,15 @@ const App: React.FC = () => {
   <div className="subtitle"><p>Twitter</p></div>
 
   <div className="timeline">
-  <TwitterTL/>
-  
+    <TwitterTL/>
   </div>
 </div>
 
 <div className="center_element">
   <div className="subtitle"><p>Instagram</p></div>
-  <div className="timeline">
+    <div className="timeline">
 
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-  <div className="post">
-    <div className="username"><p>user</p></div>
-    <p>text</p>
-  </div>
-
-  </div>
+    </div>
 </div>
 
 <div className="right_element">
