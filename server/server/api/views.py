@@ -26,7 +26,7 @@ def react_home_json(request):
     if request.method == 'POST':
         access_token = request.POST['access_token']
         access_token_secret = request.POST['access_token_secret']
-        
+
         response = create_client(access_token, access_token_secret).get_home_timeline(
             exclude=['retweets', 'replies'],
             tweet_fields=['created_at', 'author_id', 'public_metrics'],
@@ -49,20 +49,12 @@ def home_json(request):
         access_token = request.POST['access_token']
         access_token_secret = request.POST['access_token_secret']
 
-        response = create_client(access_token, access_token_secret).get_home_timeline().json()
-        return JsonResponse(response)
-    else:
-        return JsonResponse({'hello': 'json'})
-
-
-@csrf_exempt
-def page_home(request):
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
-
-        response = create_client(access_token, access_token_secret).get_home_timeline(max_results=100).json()
-        next_token = response['meta']['next_token']
+        try:
+            next_token = request.POST['next_token']
+            response = create_client(access_token, access_token_secret).get_home_timeline(
+                pagination_token=next_token).json()
+        except KeyError:
+            response = create_client(access_token, access_token_secret).get_home_timeline().json()
 
         return JsonResponse(response)
     else:
