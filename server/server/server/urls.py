@@ -27,5 +27,6 @@ urlpatterns = [
     path('retweet/', views.retweet),
     path('unretweet/', views.unretweet),
     path('like/', views.like),
+    path('unlike/', views.unlike),
     path('reply/', views.reply),
 ]
