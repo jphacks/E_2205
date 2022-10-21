@@ -1,11 +1,25 @@
 import os
 import json
 import datetime
+import pprint
 from django.http import JsonResponse
 from django.shortcuts import redirect
 import tweepy
 from requests import Response
 from requests_oauthlib import OAuth1Session
+
+
+def create_client(access_token:str, access_token_secret:str):
+    client = tweepy.Client(
+        os.environ['BEARER_TOKEN'],
+        os.environ['CONSUMER_KEY'],
+        os.environ['CONSUMER_SECRET'],
+        access_token,
+        access_token_secret,
+        return_type=Response
+    )
+
+    return client
 
 
 def login(request):
@@ -46,29 +60,16 @@ def oauth(request, *args, **kwargs):
     access_token = acc_token_dict["oauth_token"]
     access_token_secret = acc_token_dict["oauth_token_secret"]
 
-    # print("Access Token       :", access_token)
-    # print("Access Token Secret:", access_token_secret)
-    # print("User ID            :", acc_token_dict["user_id"])
-    # print("Screen Name        :", acc_token_dict["screen_name"])
-
-    client = tweepy.Client(
-        os.environ['BEARER_TOKEN'],
-        os.environ['CONSUMER_KEY'],
-        os.environ['CONSUMER_SECRET'],
-        access_token,
-        access_token_secret
-    )
-
     tweet_text = f"connected {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
 
-    client.create_tweet(text=tweet_text)
+    create_client(access_token,access_token_secret).create_tweet(text=tweet_text)
 
     response = {
         "access_token":access_token,
         "access_token_secret":access_token_secret
     }
 
-    return JsonResponse(json.dumps(response))
+    return JsonResponse(response)
 
 
 def home_json(request):
