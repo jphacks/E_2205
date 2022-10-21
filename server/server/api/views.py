@@ -1,4 +1,5 @@
 import os
+import json
 import datetime
 from django.http import JsonResponse
 from django.shortcuts import redirect
@@ -62,8 +63,12 @@ def oauth(request, *args, **kwargs):
 
     client.create_tweet(text=tweet_text)
 
-    response = redirect('https://twitter.com/home')
-    return response
+    response = {
+        "access_token":access_token,
+        "access_token_secret":access_token_secret
+    }
+
+    return JsonResponse(json.dumps(response))
 
 
 def home_json(request):
