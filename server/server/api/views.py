@@ -3,14 +3,8 @@ import datetime
 from django.http import JsonResponse
 from django.shortcuts import redirect
 import tweepy
+from requests import Response
 from requests_oauthlib import OAuth1Session
-
-client = tweepy.Client(
-    consumer_key=os.environ['CONSUMER_KEY'],
-    consumer_secret=os.environ['CONSUMER_SECRET'],
-    access_token=os.environ['ACCESS_TOKEN'],
-    access_token_secret=os.environ['ACCESS_TOKEN_SECRET']
-)
 
 
 def login(request):
@@ -77,20 +71,21 @@ def home_json(request):
     Display Twitter-Timeline.
     """
 
-    if request.method == 'GET':
-        response = client.get_home_timeline()
-        print(response)
-        timeline = []
-        for tweets in response:
-            string = []
-            for tweet in tweets:
-                string.append(str(tweet))
-            timeline.append(string)
+    if request.method == 'POST':
+        access_token=request.POST['access_token']
+        access_token_secret=request.POST['access_token_secret']
 
-        data = {
-            "timeline": timeline
-        }
-        return JsonResponse(data)
+        client = tweepy.Client(
+            os.environ['CONSUMER_KEY'],
+            os.environ['CONSUMER_SECRET'],
+            access_token,
+            access_token_secret,
+            return_type=Response
+        )
+
+        response = client.get_home_timeline().json()
+
+        return JsonResponse(response)
 
 
 def page_home(request):
