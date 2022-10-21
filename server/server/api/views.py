@@ -110,20 +110,24 @@ def oauth(request, *args, **kwargs):
     return JsonResponse(response)
 
 def twitter_function(type :str, request):
+
+    def rp(name: str): return request.POST[name]
+
     if request.method == 'POST':
         access_token = request.POST['access_token']
         access_token_secret = request.POST['access_token_secret']
 
         client = create_client(access_token, access_token_secret)
-        tweet_id = request.POST['tweet_id']
 
-        if  (type == 'like')        : client.like(tweet_id)
-        elif(type == 'unlike')      : client.unlike(tweet_id)
-        elif(type == 'retweet')     : client.retweet(tweet_id)
-        elif(type == 'unretweet')   : client.unretweet(tweet_id)
-        elif(type == 'delete_tweet'): client.delete_tweet(tweet_id)
+        if  (type == 'like')        : client.like(rp('tweet_id'))
+        elif(type == 'unlike')      : client.unlike(rp('tweet_id'))
+        elif(type == 'retweet')     : client.retweet(rp('tweet_id'))
+        elif(type == 'unretweet')   : client.unretweet(rp('tweet_id'))
+        elif(type == 'create_tweet'): client.create_tweet(text=rp('message'))
+        elif(type == 'delete_tweet'): client.delete_tweet(rp('tweet_id'))
+        elif(type == 'reply')       : client.create_tweet(in_reply_to_tweet_id=rp('tweet_id'), text=rp('message'))
 
-        return JsonResponse({'data': tweet_id})
+        return JsonResponse({'IsSucceed': 'true'})
 
 @csrf_exempt
 def retweet(request):
@@ -143,13 +147,7 @@ def unlike(request):
 
 @csrf_exempt
 def create_tweet(request):
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
-
-        new_tweet = request.POST.get('tweet', 'none')
-        if (new_tweet != 'none'):
-            create_client(access_token, access_token_secret).create_tweet(text=new_tweet)
+    return twitter_function('create_tweet', request)
 
 @csrf_exempt
 def delete_tweet(request):
@@ -157,13 +155,4 @@ def delete_tweet(request):
 
 @csrf_exempt
 def reply(request):
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
-
-        message = request.POST['reply']
-        tweet_id = request.POST['tweet_id']
-        if (message != 'none'):
-            create_client(access_token, access_token_secret).create_tweet(in_reply_to_tweet_id=tweet_id, text=message)
-        
-        return JsonResponse({'data': message})
+    return twitter_function('reply', request)
