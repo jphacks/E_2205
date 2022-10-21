@@ -61,6 +61,7 @@ def page_home(request):
         access_token = request.POST['access_token']
         access_token_secret = request.POST['access_token_secret']
 
+        
         response = create_client(access_token, access_token_secret).get_home_timeline(max_results=100).json()
         next_token = response['meta']['next_token']
 
@@ -128,3 +129,14 @@ def oauth(request, *args, **kwargs):
     }
 
     return JsonResponse(response)
+
+@csrf_exempt
+def retweet(request):
+    if request.method == 'POST':
+        access_token = request.POST['access_token']
+        access_token_secret = request.POST['access_token_secret']
+
+        tweet_id = request.POST['tweet_id']
+        create_client(access_token, access_token_secret).retweet(tweet_id)
+
+        return JsonResponse({'hello': tweet_id})

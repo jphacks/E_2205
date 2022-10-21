@@ -25,4 +25,5 @@ urlpatterns = [
     path('login/', views.login),
     path('oauth/', views.oauth),
     path('react_home_json/', views.react_home_json),
+    path('retweet/', views.retweet),
 ]
