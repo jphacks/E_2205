@@ -156,7 +156,16 @@ def like(request):
 
         return JsonResponse({'hello': tweet_id})
 
+@csrf_exempt
+def unlike(request):
+    if request.method == 'POST':
+        access_token = request.POST['access_token']
+        access_token_secret = request.POST['access_token_secret']
 
+        tweet_id = request.POST['tweet_id']
+        create_client(access_token, access_token_secret).unlike(tweet_id)
+
+        return JsonResponse({'hello': tweet_id})
 
 @csrf_exempt
 def reply(request):
