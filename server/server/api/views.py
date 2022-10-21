@@ -121,51 +121,36 @@ def oauth(request, *args, **kwargs):
 
     return JsonResponse(response)
 
-@csrf_exempt
-def retweet(request):
+def twitter_function(type :str, request):
     if request.method == 'POST':
         access_token = request.POST['access_token']
         access_token_secret = request.POST['access_token_secret']
 
+        client = create_client(access_token, access_token_secret)
         tweet_id = request.POST['tweet_id']
 
-        create_client(access_token, access_token_secret).retweet(tweet_id)
+        if(type == 'like'): client.like(tweet_id)
+        elif(type == 'unlike'): client.unlike(tweet_id)
+        elif(type == 'retweet'): client.retweet(tweet_id)
+        elif(type == 'unretweet'): client.unretweet(tweet_id)
 
         return JsonResponse({'data': tweet_id})
+
+@csrf_exempt
+def retweet(request):
+    return twitter_function('retweet', request)
 
 @csrf_exempt
 def unretweet(request):
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
-
-        tweet_id = request.POST['tweet_id']
-
-        create_client(access_token, access_token_secret).unretweet(tweet_id)
-
-        return JsonResponse({'data': tweet_id})
+    return twitter_function('unretweet', request)
 
 @csrf_exempt
 def like(request):
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
-
-        tweet_id = request.POST['tweet_id']
-        create_client(access_token, access_token_secret).like(tweet_id)
-
-        return JsonResponse({'hello': tweet_id})
+    return twitter_function('like', request)
 
 @csrf_exempt
 def unlike(request):
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
-
-        tweet_id = request.POST['tweet_id']
-        create_client(access_token, access_token_secret).unlike(tweet_id)
-
-        return JsonResponse({'hello': tweet_id})
+    return twitter_function('unlike', request)
 
 @csrf_exempt
 def reply(request):
