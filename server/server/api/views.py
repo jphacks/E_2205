@@ -146,7 +146,7 @@ def oauth(request, *args, **kwargs):
     API_KEY_SECRET = os.environ['CONSUMER_SECRET']
 
     session_acc = OAuth1Session(API_KEY, API_KEY_SECRET, oauth_token, oauth_verifier)
-    response_acc = session_acc.GET(access_endpoint_url, params={"oauth_verifier": oauth_verifier})
+    response_acc = session_acc.post(access_endpoint_url, params={"oauth_verifier": oauth_verifier})
     response_acc_text = response_acc.text
 
     access_token_kvstr = response_acc_text.split("&")
