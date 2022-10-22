@@ -1,24 +1,30 @@
-import { spawn } from 'child_process';
-import React from 'react';
-import * as ReactDOM from 'react-dom';
-import Data from './output.json';
+import React, { useEffect } from 'react';
+//import Data from './output.json';
 
-function GetUser(author_id:string):number{
-    return Data.includes.users.findIndex(e=>e.id==author_id);
-}
+let Data = {};
 
-function GetMedia(media_key:string):number{
-    return Data.includes.media.findIndex(e=>e.media_key==media_key);
-}
 
 const TwitterTL = ()=>{
+    fetch('http://127.0.0.1:8000/react_home_json/?access_token=&access_token_secret=', {
+        method:'get'
+    }).then((data) => {
+        return data.json();
+    }).then((data) => {
+        console.log("--- data ---");
+        console.log(data);
+        Data = data;
+        //completeAssign(Data, data);
+    });
+
+    console.log("--- Data ---");
+    console.log(Data);
     return (
         <div className='TTL_wr'>
-            {Data.data.map(v=>{
+            {Data.data ? Data.data.map(v=>{
                 let u_index = GetUser(v.author_id);
-                let u_name:string;
-                let u_username:string;
-                let u_icon:string;
+                let u_name;
+                let u_username;
+                let u_icon;
                 if(u_index < 0){
                     u_name = "unknown";
                     u_username = "unknown";
@@ -29,7 +35,7 @@ const TwitterTL = ()=>{
                     u_username = Data.includes.users[u_index].username;
                     u_icon = Data.includes.users[u_index].profile_image_url;
                 }
-                let photo_srcs: string[] = [];
+                let photo_srcs = [];
                 if(v.attachments){
                     v.attachments.media_keys.forEach(
                         mk => {
@@ -60,11 +66,11 @@ const TwitterTL = ()=>{
                     <div className="p_parts_text" style={{margin: 0}}>
                         {
                             (()=>{
-                                let rtn:(React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>|React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>)[] = [];
+                                let rtn = [];
                                 //let rtn:(string|React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>)[] = [];
                                 let txt = v.text;
-                                let txts:string[];
-                                let atags:React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>[] = [];
+                                let txts;
+                                let atags = [];
                                 let mch = txt.match(/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?/g);
                                 if(0 && mch){
                                     // URLを含む
@@ -109,10 +115,38 @@ const TwitterTL = ()=>{
                     </p>
                 </div>
                 );
-            })}
+            }) : null}
             
         </div>
     );
 }
+
+function GetUser(author_id){
+    return Data.includes.users.findIndex(e=>e.id==author_id);
+}
+
+function GetMedia(media_key){
+    return Data.includes.media.findIndex(e=>e.media_key==media_key);
+}
+
+// オブジェクトの完全コピー
+function completeAssign(target, ...sources) {
+    sources.forEach(source => {
+      let descriptors = Object.keys(source).reduce((descriptors, key) => {
+        descriptors[key] = Object.getOwnPropertyDescriptor(source, key);
+        return descriptors;
+      }, {});
+  
+      // 既定では、 Object.assign は列挙可能なシンボルもコピーする
+      Object.getOwnPropertySymbols(source).forEach(sym => {
+        let descriptor = Object.getOwnPropertyDescriptor(source, sym);
+        if (descriptor.enumerable) {
+          descriptors[sym] = descriptor;
+        }
+      });
+      Object.defineProperties(target, descriptors);
+    });
+    return target;
+  }
 
 export default TwitterTL;
