@@ -23,9 +23,9 @@ def create_client(access_token: str, access_token_secret: str):
 
 @csrf_exempt
 def react_home_json(request):
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
+    if request.method == 'GET':
+        access_token = request.GET['access_token']
+        access_token_secret = request.GET['access_token_secret']
 
         response = create_client(access_token, access_token_secret).get_home_timeline(
             exclude=['retweets', 'replies'],
@@ -45,12 +45,12 @@ def home_json(request):
     Display Twitter-Timeline.
     """
 
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
+    if request.method == 'GET':
+        access_token = request.GET['access_token']
+        access_token_secret = request.GET['access_token_secret']
 
         try:
-            next_token = request.POST['next_token']
+            next_token = request.GET['next_token']
             response = create_client(access_token, access_token_secret).get_home_timeline(
                 pagination_token=next_token).json()
         except KeyError:
@@ -90,7 +90,7 @@ def oauth(request, *args, **kwargs):
     API_KEY_SECRET = os.environ['CONSUMER_SECRET']
 
     session_acc = OAuth1Session(API_KEY, API_KEY_SECRET, oauth_token, oauth_verifier)
-    response_acc = session_acc.post(access_endpoint_url, params={"oauth_verifier": oauth_verifier})
+    response_acc = session_acc.GET(access_endpoint_url, params={"oauth_verifier": oauth_verifier})
     response_acc_text = response_acc.text
 
     access_token_kvstr = response_acc_text.split("&")
@@ -111,11 +111,11 @@ def oauth(request, *args, **kwargs):
 
 def twitter_function(type :str, request):
 
-    def rp(name: str): return request.POST[name]
+    def rp(name: str): return request.GET[name]
 
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
+    if request.method == 'GET':
+        access_token = request.GET['access_token']
+        access_token_secret = request.GET['access_token_secret']
 
         client = create_client(access_token, access_token_secret)
 
