@@ -163,7 +163,8 @@ def oauth(request, *args, **kwargs):
         "access_token_secret": access_token_secret
     }
 
-    return JsonResponse(response)
+    response = redirect(f'http://localhost:3000/?access_token={access_token}&access_token_secret={access_token_secret}')
+    return response
 
 
 def twitter_function(type: str, request):
