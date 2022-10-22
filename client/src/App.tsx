@@ -1,10 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import './TwitterTL.jsx'
 
 import { useState} from "react";
 import TwitterTL from './TwitterTL';
+import InstagramTL from './InstagramTL';
 
 type TodoType = {
   id: number;
@@ -77,7 +77,7 @@ const App: React.FC = () => {
 <div className="center_element">
   <div className="subtitle"><p>Instagram</p></div>
     <div className="timeline">
-
+        <InstagramTL/>
     </div>
 </div>
 
