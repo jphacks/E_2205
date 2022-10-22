@@ -1,4 +1,4 @@
-# TwiCordGram（仮）
+# TwiCordGram
 
 [![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2022/08/JPHACKS2022_ogp.jpg)](https://www.youtube.com/watch?v=LUPQFB4QyVo)
 
@@ -9,17 +9,14 @@ SNSを一括して管理することによって、切り替えの手間を無�
 
 ### 製品説明（具体的な製品の説明）
  - Twitter
- - Instagram→Facebook・Messenger
- - Discord
- - メール
+ - Instagram
 を一括して管理することができる。
 
 ### 特長
 #### 1. 特長1
-DM
+各SNSのTLをタブ切り替え等の操作なしに同時に見ることができる。
 
 #### 2. 特長2
-TL
 
 #### 3. 特長3
 
@@ -39,18 +36,20 @@ TL
 
 #### フレームワーク・ライブラリ・モジュール
 * [React](https://ja.reactjs.org/)
-* [NestJS](https://nestjs.com/)
+* [Django](https://www.djangoproject.com/)
 * [Twitter API v2](https://github.com/PLhery/node-twitter-api-v2#twitter-api-v2)
-* 
+* [Instagram Graph API](https://developers.facebook.com/docs/instagram-api)
 
 #### デバイス
-* 
+* Google Chrome
 * 
 
 ### 独自技術
 #### ハッカソンで開発した独自機能・技術
-* 独自で開発したものの内容をこちらに記載してください
-* 特に力を入れた部分をファイルリンク、またはcommit_idを記載してください。
+* TwitterAPIによる第三者認証の実装部分
+情報が少なく、承認後のリダイレクト処理などに工夫を凝らした。
+https://github.com/jphacks/E_2205/commit/42e66e56c87d499b28c76e71049f752216a8830b
+* 
 
 #### 製品に取り入れた研究内容（データ・ソフトウェアなど）（※アカデミック部門の場合のみ提出必須）
 * 

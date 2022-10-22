@@ -3,8 +3,8 @@
 
 .App{
   display: flex;
-  height: 559px;
-  padding: 5px;
+  height: 99vh;
+  padding: 0.5vh;
   background: linear-gradient(to bottom right, #41b9ff, #ef85ff);
 }
 
@@ -20,6 +20,7 @@
   background: #ffffffc0;
   margin: 10px;
   border-radius: 10px;
+  position:relative;
 }
 
 .right_element{
@@ -30,15 +31,20 @@
 }
 
 .create_post{
-  height: 37%;
+  height: 38%;
   margin: 10px;
+  margin-bottom: 15px;
   background: #ffffff;
+  border-radius: 10px;
 }
 
 .timeline{
-  height: 90%;
-  margin: 10px;
-  margin-left: 12px;
+  position: absolute;
+  top:7%;
+  bottom:0;
+  right:0;
+  left:0;
+  margin: 10px 10px 10px 12px;
   overflow-y: scroll;
 }
 
