@@ -38,10 +38,10 @@ const App: React.FC = () => {
   <div className="title"><p>TwiCordGram</p></div>
 
   <div className='create_post'>
-    <textarea className="tecxt_area"
+    <textarea className="text_area"
         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange(e)}
       />
-      <button onClick={(): void => handleClick()}>tweet</button>
+      <button className="button" onClick={(): void => handleClick()}>tweet</button>
       {todos.map((number) => (
         <p key={number.id}>
           {number.todo}
