@@ -60,6 +60,29 @@ def home_json(request):
     else:
         return JsonResponse({'hello': 'json'})
 
+@csrf_exempt
+def user_tweets(request):
+    """
+    Display User Tweets.
+    """
+
+    if request.method == 'POST':
+        access_token = request.POST['access_token']
+        access_token_secret = request.POST['access_token_secret']
+
+        client = create_client(access_token, access_token_secret)
+        user_id = client.get_user(username=request.POST['username']).json()['data']['id']
+
+        try:
+            next_token = request.POST['next_token']
+            response = client.get_users_tweets(id=user_id, pagination_token=next_token).json()
+        except KeyError:
+            response = client.get_users_tweets(user_id).json()
+
+        return JsonResponse(response)
+    else:
+        return JsonResponse({'hello': 'json'})
+
 def login(request):
     API_KEY = os.environ['CONSUMER_KEY']
     API_KEY_SECRET = os.environ['CONSUMER_SECRET']
@@ -126,6 +149,8 @@ def twitter_function(type :str, request):
         elif(type == 'create_tweet'): client.create_tweet(text=rp('message'))
         elif(type == 'delete_tweet'): client.delete_tweet(rp('tweet_id'))
         elif(type == 'reply')       : client.create_tweet(in_reply_to_tweet_id=rp('tweet_id'), text=rp('message'))
+        elif(type == 'follow')      : client.follow_user(client.get_user(username=rp('username')).json()['data']['id'])
+        elif(type == 'unfollow')    : client.unfollow_user(client.get_user(username=rp('username')).json()['data']['id'])
 
         return JsonResponse({'IsSucceed': 'true'})
 
@@ -156,3 +181,11 @@ def delete_tweet(request):
 @csrf_exempt
 def reply(request):
     return twitter_function('reply', request)
+
+@csrf_exempt
+def follow(request):
+    return twitter_function('follow', request)
+
+@csrf_exempt
+def unfollow(request):
+    return twitter_function('unfollow', request)
