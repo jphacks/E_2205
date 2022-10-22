@@ -1,26 +1,52 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import './TwitterTL.tsx'
+import './TextBox.tsx'
+
+import TwitterTL from './TwitterTL';
+import TextBox from './TextBox';
 
 function App() {
-  return (
-    
+  return(
+
     <div className="App">
 
-      <h1>TwiCordGram(仮)</h1>
+      <div className="left_element">
 
-      <div className="example2">
-        <div>
-          ここに新規投稿作成UIを置く<br></br>
-          TwitterとInstagramを切り替えられるようにする
+        <div className="title"><p>TwiCordGram</p></div>
+
+        <div className='create_post'>
+          <TextBox/>
         </div>
-        <div>ここにTwitterのTLを表示</div>
-        <div>ここにInstagramのTLを表示</div>
+
+        <div className='create_post'>
+          <TextBox/>
+        </div>
+
+      </div>
+
+      <div className="center_element">
+        <div className="subtitle"><p>Twitter</p></div>
+
+        <div className="timeline">
+          <TwitterTL/>
+        </div>
+      </div>
+
+      <div className="center_element">
+        <div className="subtitle"><p>Instagram</p></div>
+          <div className="timeline">
+
+          </div>
+      </div>
+
+      <div className="right_element">
+        設定アイコンとかを置く(余裕があれば)
       </div>
 
     </div>
-    
-  );
-}
 
+  )
+}
 export default App;
