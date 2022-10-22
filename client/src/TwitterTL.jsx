@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 
 let Data = {};
 
+var herat = "♡";
 
 const TwitterTL = ()=>{
     //URLパラメータを文字列で取得(?含む)
@@ -41,6 +42,8 @@ const TwitterTL = ()=>{
 
     console.log("--- Data ---");
     console.log(Data);
+
+    
     return (
         <div className='TTL_wr'>
             {Data.data ? Data.data.map(v=>{
@@ -135,6 +138,7 @@ const TwitterTL = ()=>{
                         　≫{v.public_metrics.quote_count}
                         　RT {v.public_metrics.retweet_count}
                         　❤{v.public_metrics.like_count}
+                        <input type="button" value = "♡" onClick={()=>like_button(v.id)}></input>
                     </p>
                 </div>
                 );
@@ -151,6 +155,17 @@ function GetUser(author_id){
 function GetMedia(media_key){
     return Data.includes.media.findIndex(e=>e.media_key==media_key);
 }
+
+function like_button(id){
+
+    fetch('http://127.0.0.1:8000/like/?access_token=1581116917070561281-9hCkNkzAjhdAw2VeN8O4JwxB9opq28&access_token_secret=BT090wjmdWJamf5HwsJnyX1LBEmca1f909BonXJa31Upd&tweet_id=id', {
+        method:'get'
+    }).then((data) => {
+        return data.json();
+    }).then((data) => {
+        console.table(data);
+    });
+    }
 
 // オブジェクトの完全コピー
 function completeAssign(target, ...sources) {
@@ -172,4 +187,8 @@ function completeAssign(target, ...sources) {
     return target;
   }
 
+  
+
+
+  
 export default TwitterTL;
