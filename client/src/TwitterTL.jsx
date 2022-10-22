@@ -5,7 +5,7 @@ let Data = {};
 
 
 const TwitterTL = ()=>{
-    fetch('http://127.0.0.1:8000/react_home_json/?access_token=&access_token_secret=', {
+    fetch('http://127.0.0.1:8000/home/?access_token=&access_token_secret=', {
         method:'get'
     }).then((data) => {
         return data.json();
