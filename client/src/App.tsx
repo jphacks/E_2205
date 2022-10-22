@@ -53,7 +53,12 @@ const App: React.FC = () => {
       </div>
 
       <div className="right_element">
-        設定アイコンとかを置く(余裕があれば)
+        <div className="iconlike">
+          <p>👤</p>
+          <p>🔔</p>
+          <p>📬</p>
+          <p>⚙️</p>
+        </div>
       </div>
 
     </div>
