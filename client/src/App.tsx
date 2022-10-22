@@ -18,7 +18,7 @@ const App: React.FC = () => {
   const [text, setText] = useState<string>("");
   const [todos, setTodos] = useState<TodoType[]>([]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setText(e.target.value);
   };
   const handleClick = (): void => {
@@ -38,9 +38,8 @@ const App: React.FC = () => {
   <div className="title"><p>TwiCordGram</p></div>
 
   <div className='create_post'>
-    <input
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
-        type="text"
+    <textarea className="tecxt_area"
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange(e)}
       />
       <button onClick={(): void => handleClick()}>tweet</button>
       {todos.map((number) => (

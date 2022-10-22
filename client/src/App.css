@@ -34,9 +34,10 @@
 
 .create_post{
   /* 37%→150px */
-  height: 150px;
+  height: 20%;
   margin: 10px;
   background: #ffffff;
+  position: relative;
 }
 
 .timeline{
@@ -52,6 +53,7 @@
   right:0;
   left:0;
   margin: 10px 10px 10px 12px;
+  overflow-wrap:break-word;
   overflow-y: scroll;
 }
 
@@ -66,7 +68,7 @@
 }
 
 .title{
-  font-size: 36px;
+  font-size: 35px;
   font-family: 'Corben', cursive;
   margin-top: -20px;
   margin-bottom: -20px;
@@ -74,9 +76,13 @@
 }
 
 .subtitle{
-  font-size: 30px;
+  font-size: 35px;
   font-family: 'Vollkorn', cursive;
   margin-top: -24px;
   margin-bottom: -30px;
   margin-left: 10px;
+}
+
+.text_area{
+  line-height: 5;
 }
