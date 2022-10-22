@@ -33,6 +33,9 @@ urlpatterns = [
     path('delete_tweet/', views.delete_tweet),
     path('follow/', views.follow),
     path('unfollow/', views.unfollow),
+    path('get_followers/', views.get_followers),
+    path('get_following/', views.get_following),
+    path('unfollow/', views.unfollow),
     path('search_tweets/', views.search_tweet),
-    # path('search_users/', views.search_user),
+    #path('search_users/', views.search_user),
 ]

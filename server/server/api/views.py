@@ -152,7 +152,12 @@ def twitter_function(type :str, request):
         elif(type == 'follow')      : client.follow_user(client.get_user(username=rp('username')).json()['data']['id'])
         elif(type == 'unfollow')    : client.unfollow_user(client.get_user(username=rp('username')).json()['data']['id'])
         elif(type == 'search_tweet'): return JsonResponse(client.search_recent_tweets(rp('keyword')).json())
-        # elif(type == 'search_user') : return JsonResponse(client.get_users(username=rp('keyword')).json())
+        #elif(type == 'search_user') : return JsonResponse(client.get_users(username=rp('keyword')).json())
+        elif(type == 'get_followers'): 
+            return JsonResponse(client.get_users_followers(client.get_user(username=rp('username')).json()['data']['id']).json())
+        elif(type == 'get_following'):
+            return JsonResponse(client.get_users_following(client.get_user(username=rp('username')).json()['data']['id']).json())
+        
 
         return JsonResponse({'IsSucceed': 'true'})
 
@@ -199,3 +204,11 @@ def search_tweet(request):
 # @csrf_exempt
 # def search_user(request):
 #     return twitter_function('search_user', request)
+
+@csrf_exempt
+def get_followers(request):
+    return twitter_function('get_followers', request)
+
+@csrf_exempt
+def get_following(request):
+    return twitter_function('get_following', request)
