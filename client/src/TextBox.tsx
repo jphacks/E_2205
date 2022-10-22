@@ -29,6 +29,12 @@ const TextBox: React.FC = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
             type="text"
         />
+        <input
+            type="file"
+            id="avatar" name="avatar"
+            accept="image/png, image/jpeg">
+        </input>
+        <br></br>
         <button onClick={(): void => handleClick()}>New Post</button>
         {
             todos.map((number) => (
