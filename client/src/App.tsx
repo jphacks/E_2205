@@ -6,6 +6,7 @@ import './TwitterTL.jsx'
 import './TextBox.tsx'
 
 import TwitterTL from './TwitterTL';
+import InstagramTL from './InstagramTL';
 import TextBox from './TextBox';
 
 const App: React.FC = () => {
@@ -45,12 +46,12 @@ const App: React.FC = () => {
         </div>
       </div>
 
-      <div className="center_element">
-        <div className="subtitle"><p>Instagram</p></div>
-          <div className="timeline">
-
-          </div>
-      </div>
+<div className="center_element">
+  <div className="subtitle"><p>Instagram</p></div>
+    <div className="timeline">
+        <InstagramTL/>
+    </div>
+</div>
 
       <div className="right_element">
         <div className="iconlike">
