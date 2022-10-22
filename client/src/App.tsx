@@ -21,7 +21,11 @@ const App: React.FC = () => {
 
       <div className="left_element">
 
-        <div className="title"><p>TwiCordGram</p></div>
+        <div className="title"><p>Twi<span style={{
+          textDecorationLine: "line-through",
+          textDecorationStyle: "double",
+          textDecorationColor: "red"
+        }}>Cord</span>Gram</p></div>
 
         <div className='create_post'>
           <TextBox/>
