@@ -157,6 +157,11 @@ def twitter_function(type :str, request):
             return JsonResponse(client.get_users_followers(client.get_user(username=rp('username')).json()['data']['id']).json())
         elif(type == 'get_following'):
             return JsonResponse(client.get_users_following(client.get_user(username=rp('username')).json()['data']['id']).json())
+        elif(type == 'get_profile') :
+            return JsonResponse(client.get_user(
+                username=rp('username'), 
+                user_fields=['name', 'username', 'description', 'profile_image_url', 'url']
+            ).json())
         
 
         return JsonResponse({'IsSucceed': 'true'})
@@ -212,3 +217,7 @@ def get_followers(request):
 @csrf_exempt
 def get_following(request):
     return twitter_function('get_following', request)
+
+@csrf_exempt
+def get_profile(request):
+    return twitter_function('get_profile', request)

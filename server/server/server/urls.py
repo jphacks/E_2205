@@ -37,5 +37,6 @@ urlpatterns = [
     path('get_following/', views.get_following),
     path('unfollow/', views.unfollow),
     path('search_tweets/', views.search_tweet),
+    path('get_profile/', views.get_profile),
     #path('search_users/', views.search_user),
 ]
