@@ -66,15 +66,15 @@ def user_tweets(request):
     Display User Tweets.
     """
 
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
+    if request.method == 'GET':
+        access_token = request.GET['access_token']
+        access_token_secret = request.GET['access_token_secret']
 
         client = create_client(access_token, access_token_secret)
-        user_id = client.get_user(username=request.POST['username']).json()['data']['id']
+        user_id = client.get_user(username=request.GET['username']).json()['data']['id']
 
         try:
-            next_token = request.POST['next_token']
+            next_token = request.GET['next_token']
             response = client.get_users_tweets(id=user_id, pagination_token=next_token).json()
         except KeyError:
             response = client.get_users_tweets(user_id).json()
