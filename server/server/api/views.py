@@ -23,9 +23,9 @@ def create_client(access_token: str, access_token_secret: str):
 
 @csrf_exempt
 def react_home_json(request):
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
+    if request.method == 'GET':
+        access_token = request.GET['access_token']
+        access_token_secret = request.GET['access_token_secret']
 
         response = create_client(access_token, access_token_secret).get_home_timeline(
             exclude=['retweets', 'replies'],
@@ -45,12 +45,12 @@ def home_json(request):
     Display Twitter-Timeline.
     """
 
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
+    if request.method == 'GET':
+        access_token = request.GET['access_token']
+        access_token_secret = request.GET['access_token_secret']
 
         try:
-            next_token = request.POST['next_token']
+            next_token = request.GET['next_token']
             response = create_client(access_token, access_token_secret).get_home_timeline(
                 pagination_token=next_token).json()
         except KeyError:
@@ -60,17 +60,28 @@ def home_json(request):
     else:
         return JsonResponse({'hello': 'json'})
 
-
 @csrf_exempt
-def create_tweet(request):
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
+def user_tweets(request):
+    """
+    Display User Tweets.
+    """
 
-        new_tweet = request.POST.get('tweet', 'none')
-        if (new_tweet != 'none'):
-            create_client(access_token, access_token_secret).create_tweet(text=new_tweet)
+    if request.method == 'GET':
+        access_token = request.GET['access_token']
+        access_token_secret = request.GET['access_token_secret']
 
+        client = create_client(access_token, access_token_secret)
+        user_id = client.get_user(username=request.GET['username']).json()['data']['id']
+
+        try:
+            next_token = request.GET['next_token']
+            response = client.get_users_tweets(id=user_id, pagination_token=next_token).json()
+        except KeyError:
+            response = client.get_users_tweets(user_id).json()
+
+        return JsonResponse(response)
+    else:
+        return JsonResponse({'hello': 'json'})
 
 def login(request):
     API_KEY = os.environ['CONSUMER_KEY']
@@ -102,7 +113,7 @@ def oauth(request, *args, **kwargs):
     API_KEY_SECRET = os.environ['CONSUMER_SECRET']
 
     session_acc = OAuth1Session(API_KEY, API_KEY_SECRET, oauth_token, oauth_verifier)
-    response_acc = session_acc.post(access_endpoint_url, params={"oauth_verifier": oauth_verifier})
+    response_acc = session_acc.GET(access_endpoint_url, params={"oauth_verifier": oauth_verifier})
     response_acc_text = response_acc.text
 
     access_token_kvstr = response_acc_text.split("&")
@@ -121,24 +132,60 @@ def oauth(request, *args, **kwargs):
 
     return JsonResponse(response)
 
+def twitter_function(type :str, request):
+
+    def rp(name: str): return request.GET[name]
+
+    if request.method == 'GET':
+        access_token = request.GET['access_token']
+        access_token_secret = request.GET['access_token_secret']
+
+        client = create_client(access_token, access_token_secret)
+
+        if  (type == 'like')        : client.like(rp('tweet_id'))
+        elif(type == 'unlike')      : client.unlike(rp('tweet_id'))
+        elif(type == 'retweet')     : client.retweet(rp('tweet_id'))
+        elif(type == 'unretweet')   : client.unretweet(rp('tweet_id'))
+        elif(type == 'create_tweet'): client.create_tweet(text=rp('message'))
+        elif(type == 'delete_tweet'): client.delete_tweet(rp('tweet_id'))
+        elif(type == 'reply')       : client.create_tweet(in_reply_to_tweet_id=rp('tweet_id'), text=rp('message'))
+        elif(type == 'follow')      : client.follow_user(client.get_user(username=rp('username')).json()['data']['id'])
+        elif(type == 'unfollow')    : client.unfollow_user(client.get_user(username=rp('username')).json()['data']['id'])
+
+        return JsonResponse({'IsSucceed': 'true'})
+
 @csrf_exempt
 def retweet(request):
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
+    return twitter_function('retweet', request)
 
-        tweet_id = request.POST['tweet_id']
-        create_client(access_token, access_token_secret).retweet(tweet_id)
-
-        return JsonResponse({'hello': tweet_id})
+@csrf_exempt
+def unretweet(request):
+    return twitter_function('unretweet', request)
 
 @csrf_exempt
 def like(request):
-    if request.method == 'POST':
-        access_token = request.POST['access_token']
-        access_token_secret = request.POST['access_token_secret']
+    return twitter_function('like', request)
 
-        tweet_id = request.POST['tweet_id']
-        create_client(access_token, access_token_secret).like(tweet_id)
+@csrf_exempt
+def unlike(request):
+    return twitter_function('unlike', request)
 
-        return JsonResponse({'hello': tweet_id})
+@csrf_exempt
+def create_tweet(request):
+    return twitter_function('create_tweet', request)
+
+@csrf_exempt
+def delete_tweet(request):
+    return twitter_function('delete_tweet', request)
+
+@csrf_exempt
+def reply(request):
+    return twitter_function('reply', request)
+
+@csrf_exempt
+def follow(request):
+    return twitter_function('follow', request)
+
+@csrf_exempt
+def unfollow(request):
+    return twitter_function('unfollow', request)
