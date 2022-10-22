@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css?family=Corben:700');
+@import url('https://fonts.googleapis.com/css?family=Vollkorn');
+
+.App{
+  display: flex;
+  height: 99vh;
+  padding: 0.5vh;
+  /* padding:5px; */
+  background: linear-gradient(to bottom right, #41b9ff, #ef85ff);
+}
+
+.left_element{
+  flex: 4;
+  background: #ffffffc0;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.center_element{
+  flex: 4;
+  background: #ffffffc0;
+  margin: 10px;
+  border-radius: 10px;
+  /* position追加 */
+  position:relative;
+}
+
+.right_element{
+  flex: 1;
+  background: #ffffffc0;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.create_post{
+  /* 37%→150px */
+  height: 150px;
+  margin: 10px;
+  background: #ffffff;
+}
+
+.timeline{
+  /* height: 90%;
+  margin: 10px;
+  margin-left: 12px;
+  overflow-y: scroll;
+  から変更
+  */
+  position: absolute;
+  top:7%;
+  bottom:0;
+  right:0;
+  left:0;
+  margin: 10px 10px 10px 12px;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 2px;
+  background: #ffffff; 
+}
+
+.title{
+  font-size: 36px;
+  font-family: 'Corben', cursive;
+  margin-top: -20px;
+  margin-bottom: -20px;
+  text-align: center;
+}
+
+.subtitle{
+  font-size: 30px;
+  font-family: 'Vollkorn', cursive;
+  margin-top: -24px;
+  margin-bottom: -30px;
+  margin-left: 10px;
+}
