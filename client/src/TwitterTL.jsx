@@ -5,7 +5,30 @@ let Data = {};
 
 
 const TwitterTL = ()=>{
-    fetch('http://127.0.0.1:8000/react_home_json/?access_token=&access_token_secret=', {
+    //URLパラメータを文字列で取得(?含む)
+    let urlParamStr = window.location.search
+    
+    let params = {}
+    params.access_token = ''
+    params.access_token_secret = ''
+    if (urlParamStr) {
+        //?を除去
+        urlParamStr = urlParamStr.substring(1)
+
+        //urlパラメータをオブジェクトにまとめる
+        urlParamStr.split('&').forEach( param => {
+        const temp = param.split('=')
+        //pramsオブジェクトにパラメータを追加
+        params = {
+            ...params,
+            [temp[0]]: temp[1]
+        }
+        })
+
+        console.log(params)
+    }
+
+    fetch(`http://127.0.0.1:8000/home/?access_token=${params.access_token}&access_token_secret=${params.access_token_secret}`, {
         method:'get'
     }).then((data) => {
         return data.json();

@@ -1,11 +1,53 @@
 import os
 import datetime
+import json
 import tweepy
+import instagrapi
 from requests import Response
 from requests_oauthlib import OAuth1Session
 from django.shortcuts import redirect
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+
+
+def instagram_user_home(username:str, client:instagrapi.Client):
+    user_id = client.user_id_from_username(username)
+    medias = client.user_medias(user_id, 20)
+
+    data=[]
+    for media in medias:
+        post={}
+        post['date']=str(media.taken_at)
+        post['user']=media.user.username
+        post['like']=media.like_count
+        post['text']=media.caption_text
+        if media.resources:
+            post['media']=[]
+            for resource in media.resources:
+                post['media'].append(str(resource.thumbnail_url))
+        else:
+            post['media']=[]
+            post['media'].append(str(resource.thumbnail_url))
+        data.append(post)
+
+    return data
+
+
+def instagram_home(request):
+    client = instagrapi.Client()
+    ACCOUNT_USERNAME = os.environ['ACCOUNT_USERNAME']
+    ACCOUNT_PASSWORD = os.environ['ACCOUNT_PASSWORD']
+    client.login(ACCOUNT_USERNAME, ACCOUNT_PASSWORD)
+
+    follows=["mi0.256","kou_171856","gashi9697","131_deve"]
+
+    response = {}
+    response['data'] = []
+
+    for follow in follows:
+        response['data'].append(instagram_user_home(follow,client))
+
+    return JsonResponse(response)
 
 
 def create_client(access_token: str, access_token_secret: str):
@@ -73,6 +115,7 @@ def user_tweets(request):
     else:
         return JsonResponse({'hello': 'json'})
 
+
 def login(request):
     API_KEY = os.environ['CONSUMER_KEY']
     API_KEY_SECRET = os.environ['CONSUMER_SECRET']
@@ -103,7 +146,7 @@ def oauth(request, *args, **kwargs):
     API_KEY_SECRET = os.environ['CONSUMER_SECRET']
 
     session_acc = OAuth1Session(API_KEY, API_KEY_SECRET, oauth_token, oauth_verifier)
-    response_acc = session_acc.GET(access_endpoint_url, params={"oauth_verifier": oauth_verifier})
+    response_acc = session_acc.post(access_endpoint_url, params={"oauth_verifier": oauth_verifier})
     response_acc_text = response_acc.text
 
     access_token_kvstr = response_acc_text.split("&")
@@ -122,7 +165,8 @@ def oauth(request, *args, **kwargs):
 
     return JsonResponse(response)
 
-def twitter_function(type :str, request):
+
+def twitter_function(type: str, request):
 
     def rp(name: str): return request.GET[name]
 
@@ -132,60 +176,69 @@ def twitter_function(type :str, request):
 
         client = create_client(access_token, access_token_secret)
 
-        if  (type == 'like')        : client.like(rp('tweet_id'))
-        elif(type == 'unlike')      : client.unlike(rp('tweet_id'))
-        elif(type == 'retweet')     : client.retweet(rp('tweet_id'))
-        elif(type == 'unretweet')   : client.unretweet(rp('tweet_id'))
-        elif(type == 'create_tweet'): client.create_tweet(text=rp('message'))
-        elif(type == 'delete_tweet'): client.delete_tweet(rp('tweet_id'))
-        elif(type == 'reply')       : client.create_tweet(in_reply_to_tweet_id=rp('tweet_id'), text=rp('message'))
-        elif(type == 'follow')      : client.follow_user(client.get_user(username=rp('username')).json()['data']['id'])
-        elif(type == 'unfollow')    : client.unfollow_user(client.get_user(username=rp('username')).json()['data']['id'])
-        elif(type == 'search_tweet'): return JsonResponse(client.search_recent_tweets(rp('keyword')).json())
-        #elif(type == 'search_user') : return JsonResponse(client.get_users(username=rp('keyword')).json())
-        elif(type == 'get_followers'): 
+        if (type == 'like'): client.like(rp('tweet_id'))
+        elif (type == 'unlike'): client.unlike(rp('tweet_id'))
+        elif (type == 'retweet'): client.retweet(rp('tweet_id'))
+        elif (type == 'unretweet'): client.unretweet(rp('tweet_id'))
+        elif (type == 'create_tweet'): client.create_tweet(text=rp('message'))
+        elif (type == 'delete_tweet'): client.delete_tweet(rp('tweet_id'))
+        elif (type == 'reply'): client.create_tweet(in_reply_to_tweet_id=rp('tweet_id'), text=rp('message'))
+        elif (type == 'follow'): client.follow_user(client.get_user(username=rp('username')).json()['data']['id'])
+        elif (type == 'unfollow'): client.unfollow_user(client.get_user(username=rp('username')).json()['data']['id'])
+        elif (type == 'search_tweet'): return JsonResponse(client.search_recent_tweets(rp('keyword')).json())
+        # elif(type == 'search_user') : return JsonResponse(client.get_users(username=rp('keyword')).json())
+        elif (type == 'get_followers'):
             return JsonResponse(client.get_users_followers(client.get_user(username=rp('username')).json()['data']['id']).json())
-        elif(type == 'get_following'):
+        elif (type == 'get_following'):
             return JsonResponse(client.get_users_following(client.get_user(username=rp('username')).json()['data']['id']).json())
-        
 
         return JsonResponse({'IsSucceed': 'true'})
+
 
 @csrf_exempt
 def retweet(request):
     return twitter_function('retweet', request)
 
+
 @csrf_exempt
 def unretweet(request):
     return twitter_function('unretweet', request)
+
 
 @csrf_exempt
 def like(request):
     return twitter_function('like', request)
 
+
 @csrf_exempt
 def unlike(request):
     return twitter_function('unlike', request)
+
 
 @csrf_exempt
 def create_tweet(request):
     return twitter_function('create_tweet', request)
 
+
 @csrf_exempt
 def delete_tweet(request):
     return twitter_function('delete_tweet', request)
+
 
 @csrf_exempt
 def reply(request):
     return twitter_function('reply', request)
 
+
 @csrf_exempt
 def follow(request):
     return twitter_function('follow', request)
 
+
 @csrf_exempt
 def unfollow(request):
     return twitter_function('unfollow', request)
+
 
 @csrf_exempt
 def search_tweet(request):
@@ -195,9 +248,11 @@ def search_tweet(request):
 # def search_user(request):
 #     return twitter_function('search_user', request)
 
+
 @csrf_exempt
 def get_followers(request):
     return twitter_function('get_followers', request)
+
 
 @csrf_exempt
 def get_following(request):
