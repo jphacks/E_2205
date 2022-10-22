@@ -22,24 +22,6 @@ def create_client(access_token: str, access_token_secret: str):
 
 
 @csrf_exempt
-def react_home_json(request):
-    if request.method == 'GET':
-        access_token = request.GET['access_token']
-        access_token_secret = request.GET['access_token_secret']
-
-        response = create_client(access_token, access_token_secret).get_home_timeline(
-            exclude=['retweets', 'replies'],
-            tweet_fields=['created_at', 'author_id', 'public_metrics'],
-            expansions=['author_id', 'attachments.media_keys'],
-            user_fields=['name', 'username', 'profile_image_url', 'url'],
-            media_fields=['url']
-        ).json()
-        return JsonResponse(response)
-    else:
-        return HttpResponse('need {access_token,access_token_secret}')
-
-
-@csrf_exempt
 def home_json(request):
     """
     Display Twitter-Timeline.
@@ -51,14 +33,22 @@ def home_json(request):
 
         try:
             next_token = request.GET['next_token']
-            response = create_client(access_token, access_token_secret).get_home_timeline(
-                pagination_token=next_token).json()
         except KeyError:
-            response = create_client(access_token, access_token_secret).get_home_timeline().json()
+            next_token = None
+
+        response = create_client(access_token, access_token_secret).get_home_timeline(
+            exclude=['retweets', 'replies'],
+            tweet_fields=['created_at', 'author_id', 'public_metrics'],
+            expansions=['author_id', 'attachments.media_keys'],
+            user_fields=['name', 'username', 'profile_image_url', 'url'],
+            media_fields=['url'],
+            pagination_token=next_token
+        ).json()
 
         return JsonResponse(response)
     else:
-        return JsonResponse({'hello': 'json'})
+        return HttpResponse('need {access_token,access_token_secret}')
+
 
 @csrf_exempt
 def user_tweets(request):
